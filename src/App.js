@@ -5,6 +5,7 @@ const apiKey = '4f7e92fe'
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("")
+  const [movie, setMovie] = useState({})
 
   const updateSearchTerm = (event) => {
     setSearchTerm(event.target.value)
@@ -14,7 +15,10 @@ function App() {
     event.preventDefault()
     fetch(`https://www.omdbapi.com/?apikey=${apiKey}&t=${searchTerm}`)
     .then (response => response.json())
-    .then(data => console.log(data))
+    .then(data => {
+      setMovie(data)
+      setSearchTerm("")
+    })
     .catch(() => console.log('error'))
   }
 
@@ -26,6 +30,13 @@ function App() {
         <input onChange={updateSearchTerm} value={searchTerm} type="text" placeholder="Movie Title"/>
         <input type="submit" value="Find Movie Info"/>
       </form>
+      <div>
+        <h2>Title: {movie.title}</h2>
+        <h3>Year: {movie.Year}</h3>
+        <img src={movie.Poster} alt={movie.Title}/>
+        <h4>Genre: {movie.Genre}</h4>
+        <h5>Plot: {movie.Plot}</h5>
+      </div>
     </div>
   );
 }
